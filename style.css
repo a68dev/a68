@@ -142,6 +142,9 @@ main.doc { max-width: 40rem; padding-top: 8vh; }
 
 /* ============================================================ components */
 
+/* .card and .ends are unused on the page as it currently stands — the contact block was taken
+   down until michael@a68.ca is actually receiving. They come back unchanged, so leave them. */
+
 .card {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -340,6 +343,15 @@ nav.crumbs a { color: var(--muted); }
 .hero .lede {
   font-size: 1rem;
   margin: 0;
+}
+
+/* The year, inside the hero rather than in a footer of its own. With the contact block and the
+   product section both held back there is only one thing on this page, and a second frosted box
+   holding a single line would read as a leftover rather than a decision. */
+.colophon {
+  font-size: .75rem;
+  color: var(--faint);
+  margin: 1.75rem 0 0;
 }
 
 
