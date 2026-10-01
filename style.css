@@ -173,6 +173,20 @@ main.doc { max-width: 40rem; padding-top: 8vh; }
 }
 
 .home .hero, .home .intro, .home .ends { margin-bottom: 1rem; }
+
+/* With the contact block and the product section both held back, the hero is the only thing
+   left and the panel had collapsed to the height of four short lines. The min-height keeps it
+   reaching as far down the page as it did when there were three panels, so the photograph stays
+   a background rather than becoming the subject. The content centres in that taller box instead
+   of sitting at the top of it. */
+.home .hero {
+  min-height: min(62vh, 500px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 2.75rem;
+  padding-bottom: 2.25rem;
+}
 .home .intro h2 { margin-top: 0; }
 .home .ends h2 { margin-top: 1.75rem; }
 
