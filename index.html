@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A68</title>
+<meta name="description" content="A68 — small, focus, purpose.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="sun-macro.jpg" media="(min-width: 700px) and (min-aspect-ratio: 3/4)">
+<link rel="preload" as="image" href="sun-macro-900.jpg" media="(max-width: 699.98px) and (min-aspect-ratio: 3/4)">
+<link rel="preload" as="image" href="sun-macro-portrait.jpg" media="(max-aspect-ratio: 3/4)">
+<meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1219" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A68">
+<meta property="og:description" content="Small, focus, purpose.">
+<meta property="og:url" content="https://a68.ca/">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&display=swap">
+<!-- The mark's faces, subset to the one glyph each of them sets. `text=` applies to every
+     family in the request, so one request covers a whole glyph's pool. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Instrument+Serif&family=Playfair+Display:wght@700&family=Lora:wght@600&text=A&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Anton&family=Oswald:wght@600&text=6&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Space+Mono:wght@400&family=DM+Mono:wght@400&family=Azeret+Mono:wght@500&text=8&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="home">
+<!-- The scroll happens INSIDE this element, not on the document. That is what lets the
+     photograph stay perfectly still: a fixed layer is only dragged off-screen when the document
+     itself rubber-bands, and here the document never scrolls at all. The bounce is still there —
+     it just happens to the content, over a background that cannot move. -->
+<div class="scroll">
+<main>
+
+  <header class="hero panel">
+    <svg class="mark mark-hero" viewBox="0 0 360 100" role="img" aria-label="A68">
+      <title>A68</title>
+      <text x="180" y="84" text-anchor="middle"><tspan class="a">A</tspan><tspan class="s">6</tspan><tspan class="e">8</tspan></text>
+    </svg>
+    <!-- The separators are marked aria-hidden so a screen reader says "small focus purpose"
+         rather than reading three vertical-line characters aloud. -->
+    <h1 class="triad"><span>small</span><i aria-hidden="true">|</i><span>focus</span><i aria-hidden="true">|</i><span>purpose</span></h1>
+    <p class="lede">By Michael</p>
+  </header>
+
+  <div class="ends panel">
+    <h2>Get in touch</h2>
+    <div class="card">
+      <p><a href="mailto:michael@a68.ca">michael@a68.ca</a></p>
+    </div>
+
+    <footer>
+      &copy; 2026 A68
+    </footer>
+  </div>
+
+</main>
+</div>
+<!-- ?v= is a cache buster. Browsers hold on to a script hard, especially over file://, and a
+     stale copy of this one looks exactly like a bug in the current one. Bump it on every edit. -->
+<script src="mark.js?v=8"></script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+/* a68.ca — shared styles. No frameworks, no build step.
+ *
+ * Type: Hanken Grotesk on the home page, the reader's own system face on the support and
+ * privacy pages. That split is deliberate — see body.doc-page near the bottom.
+ *
+ * The A68 mark is drawn as SVG text rather than HTML text, for layout reasons explained at
+ * the mark rules.
+ */
+
+/* ============================================================ tokens */
+
+:root {
+  --bg:      #f6f7f9;
+  --surface: #ffffff;
+  --line:    #dde2e8;
+  --ink:     #16202b;
+  --muted:   #5a6674;
+  --faint:   #8c98a6;
+  --accent:  #1a4f97;   /* the app's cobalt sky */
+
+  /* Frosted-panel fill, for text sitting over the background photograph. Flat rgba rather than
+     a blend of the tokens above, so it stays readable whatever the picture is doing underneath. */
+  --scrim:      rgba(255, 255, 255, .86);
+  --scrim-line: rgba(22, 32, 43, .10);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:      #0d1219;
+    --surface: #151d27;
+    --line:    #26313d;
+    --ink:     #e6ebf1;
+    --muted:   #9aa7b5;
+    --faint:   #6f7d8c;
+    --accent:  #7fb0ea;
+
+    --scrim:      rgba(32, 39, 49, .62);
+    --scrim-line: rgba(255, 255, 255, .13);
+  }
+}
+
+/* ============================================================ base */
+
+* { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* The elastic bounce is deliberately left ON — it is part of how the page feels. What fills
+     the space it opens up is handled by the two photograph layers further down. */
+}
+
+body {
+  margin: 0;
+  padding: 0 20px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.65 "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif;
+  letter-spacing: -.003em;
+}
+
+h1 {
+  font-size: clamp(1.6rem, 4.6vw, 2.15rem);
+  line-height: 1.2;
+  letter-spacing: -.022em;
+  font-weight: 600;
+  margin: 0 0 .75rem;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -.005em;
+  margin: 2.5rem 0 .5rem;
+}
+
+h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.75rem 0 .4rem;
+}
+
+p, ul { margin: 0 0 1rem; }
+ul { padding-left: 1.2rem; }
+li { margin-bottom: .35rem; }
+
+.lede {
+  font-size: 1.0625rem;
+  color: var(--muted);
+  margin: 0 0 2.5rem;
+}
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ============================================================ layout */
+
+main {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 14vh 0 18vh;
+}
+
+/* Wider measure for the long-form pages, still under 70 characters of text. */
+main.doc { max-width: 40rem; padding-top: 8vh; }
+
+/* Home page zones. The title block is centred; the tail of the page — the contact card and the
+   copyright — is centred too, which is where centring belongs: short lines with no reading to do.
+   Any section with a paragraph in it stays flush left, because centring body copy leaves both of
+   its edges ragged and measurably slows reading. */
+/* The hero is centred with the mark. A product section below it stays flush left — those have
+   paragraphs in them, and centred body copy is harder to read. */
+.hero { text-align: center; }
+
+/* The three-word line. The separators are deliberately quieter than the words: a pipe set at
+   full weight and full colour is a taller, denser mark than any letter beside it, so left alone
+   it becomes the loudest thing in the line. Lighter colour, thinner weight and real space on
+   either side turn it back into punctuation. <i> carries no emphasis meaning here — it is just
+   the shortest element to hang the style on, and it is aria-hidden in the markup. */
+.triad { font-weight: 500; letter-spacing: -.01em; }
+.triad i {
+  font-style: normal;
+  font-weight: 300;
+  color: var(--faint);
+  margin: 0 .5em;
+  font-size: .85em;
+  vertical-align: .02em;
+}
+
+/* On a narrow phone the line would otherwise break after a separator, leaving a pipe stranded
+   at the end of a row. Tightening the spacing keeps all three words on one line down to about
+   320px. */
+@media (max-width: 400px) {
+  .triad i { margin: 0 .3em; }
+}
+.intro { text-align: left; }
+.ends { text-align: center; }
+
+.intro { margin-bottom: 2.5rem; }
+
+/* ============================================================ components */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1.25rem 1.375rem;
+  margin: 1.5rem 0;
+}
+
+.card p:last-child { margin-bottom: 0; }
+
+/* Frosted panels. With the photograph at full strength underneath, text cannot simply sit on
+   it — the picture runs from blown white to near-black within a few centimetres, so no single
+   ink colour works everywhere, and the crop moves with the viewport so you cannot even place
+   text over a safe patch. Each group of text gets its own panel instead.
+ *
+ * The blur is doing the real work, not the opacity. Removing the competing detail behind the
+ * text is what makes it comfortable to read; dimming alone only makes a busy background dimmer
+ * and busy. */
+.panel {
+  padding: 1.375rem 1.5rem;
+  background: var(--scrim);
+  border: 1px solid var(--scrim-line);
+  border-radius: 14px;
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+          backdrop-filter: blur(18px) saturate(120%);
+}
+
+.home .hero, .home .intro, .home .ends { margin-bottom: 1rem; }
+.home .intro h2 { margin-top: 0; }
+.home .ends h2 { margin-top: 1.75rem; }
+
+/* Inside a panel the card would be a box in a box — the panel is already the surface. */
+.home .ends .card {
+  background: none;
+  border: 0;
+  padding: 0;
+  /* auto, not 0. `.ends .card` sets auto side margins to centre the 20rem box; writing the
+     shorthand as `1rem 0 0` here silently zeroed them, leaving the box hard left while its text
+     centred inside it — which reads as an off-centre email address. */
+  margin: 1rem auto 0;
+}
+
+/* The footer's rule would cut the panel in half for no reason. */
+.home footer { border-top: 0; margin-top: 1.5rem; padding-top: 0; }
+
+/* Narrower and centred in the page's tail, where it holds one short line. */
+.ends .card { max-width: 20rem; margin-left: auto; margin-right: auto; }
+
+.meta {
+  font-size: .8125rem;
+  color: var(--faint);
+  margin-top: 1.5rem;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  margin-top: 3.5rem;
+  padding-top: 1.25rem;
+  font-size: .8125rem;
+  color: var(--faint);
+  text-align: center;
+}
+
+footer a { color: var(--muted); }
+
+nav.crumbs {
+  font-size: .8125rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+nav.crumbs a { color: var(--muted); }
+
+/* A68 small, in a breadcrumb: deliberately ONE face. Below about 20px the three faces stop
+   reading as a decision and start reading as a mistake, so the real mark is hero-only. */
+.wordmark-inline {
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-decoration: none;
+}
+
+.wordmark-inline:hover { text-decoration: underline; }
+
+/* ============================================================ the A68 mark */
+
+/* Three faces, one baseline. The per-glyph em sizes matter more than the choice of face: equal
+ * point sizes do not look equal, so Bebas Neue is set larger than Archivo Black to land at the
+ * same apparent height. Those numbers are the difference between one composed mark and three
+ * adjacent fonts.
+ *
+ * Drawn as SVG text, for layout stability. With HTML text, an inline box reaches above the
+ * baseline by that FONT's ascent, so swapping in a taller-ascent face grows the line box and
+ * shoves everything below it down the page. No line-height setting fixes that, because the
+ * ascent belongs to the font, not to the CSS. In SVG the baseline is the `y` coordinate — a
+ * plain number — and the viewBox fixes the element's rendered size, so the mark can change
+ * faces freely and nothing moves. */
+
+.mark {
+  display: block;
+  fill: var(--ink);
+  overflow: visible;   /* a taller face may exceed the viewBox; let it, do not clip */
+}
+
+/* Font sizes are in viewBox user units, so the mark scales from `width` alone.
+ *
+ * The edge. `paint-order: stroke fill` is what makes this work — by default SVG draws the
+ * stroke ON TOP of the fill, centred on the outline, which eats half its width out of the
+ * letterform and thins every face unevenly. Reversing the order puts the stroke behind, so the
+ * glyph keeps its exact shape and simply gains a rim.
+ *
+ * Round joins because several of these faces have sharp corners — a mitred join on Instrument
+ * Serif's serifs or Bebas Neue's angles throws visible spikes at this weight. */
+.mark text {
+  font-size: 96px;
+  paint-order: stroke fill;
+  stroke: var(--ink-edge);
+  stroke-width: 1.6;   /* against a 96-unit font: a hairline, ~0.8 units visible each side */
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* The mark's three inks, measured from the photograph rather than guessed: the gold of the
+   upright frame, the brass of the sill rail, and the grey of the blurred background beyond the
+   glass. Two metals and a neutral — a triad the picture already contained.
+
+   They are custom properties because mark.js shuffles WHICH GLYPH WEARS WHICH while it riffles.
+   Keeping the values here means the script only ever passes a name around: it never needs to
+   know about P3, or about which theme is in force. */
+:root {
+  --ink-gold:  #664e26;
+  --ink-brass: #856831;
+  --ink-grey:  #303335;
+  /* The photograph's two extremes, measured: the blown sunlit sill and the deepest shadow in
+     the frame. Used as the mark's edge, so the letters carry the picture's whole range —
+     mid-tone fills between a highlight rim and, in dark mode, a shadow one. */
+  --ink-edge:  #f3f5f4;
+}
+
+/* On a dark panel the photograph's own tones are far too dark to read. Same hue and saturation,
+   lifted in lightness — the colour the picture would have had in that light, not a different
+   colour. All three clear 6.8:1 against the dark panel. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink-gold:  #d0b281;
+    --ink-brass: #d9c297;
+    --ink-grey:  #b9bdc0;
+    --ink-edge:  #0c0f0d;
+  }
+}
+
+/* The same colours in Display P3, a wider gamut than sRGB can reach — a visibly deeper gold on
+   a P3 screen. This has to be behind @supports rather than stated as a second declaration: a
+   custom property stores whatever tokens it is given without checking them, so an unsupported
+   color() would be kept and then fail later, at the point of use, taking the fallback with it. */
+@supports (color: color(display-p3 1 1 1)) {
+  :root {
+    --ink-gold:  color(display-p3 .3853 .3096 .1735);
+    --ink-brass: color(display-p3 .5037 .4123 .2266);
+    --ink-grey:  color(display-p3 .1904 .1996 .2070);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink-gold:  color(display-p3 .7964 .7024 .5300);
+      --ink-brass: color(display-p3 .8359 .7640 .6120);
+      --ink-grey:  color(display-p3 .7283 .7407 .7516);
+    }
+  }
+}
+
+/* margin does not apply to a tspan, so the side bearings the HTML version had become
+   letter-spacing on the glyph before each gap.
+   The resting assignment: grey in the middle, flanked by the two metals. mark.js permutes these
+   while riffling and then clears its inline fills, which hands the colours back to these rules. */
+.mark .a { font-family: "Instrument Serif", Georgia, serif; font-weight: 400;
+           font-size: 1.08em; letter-spacing: .03em; fill: var(--ink-gold); }
+.mark .s { font-family: "Bebas Neue", Helvetica, sans-serif; font-weight: 400;
+           font-size: 1.06em; letter-spacing: .03em; fill: var(--ink-grey); }
+.mark .e { font-family: "Space Mono", "Courier New", monospace; font-weight: 400;
+           font-size: .88em; fill: var(--ink-brass); }
+
+/* Hero, home page only. Height follows from the viewBox ratio, so it is constant. */
+/* Centred on the page, above the left-aligned tagline. The ink is centred inside the viewBox
+   by text-anchor="middle", so centring the element centres what you actually see — and it stays
+   centred as the faces change width. For a flush-left mark instead, this needs BOTH margin: 0
+   and the <text> switched to x="0" text-anchor="start"; leaving the anchor at middle while
+   left-aligning the box indents the ink by however much narrower than the viewBox it happens to
+   be, which reads as neither left-aligned nor centred. */
+.mark-hero {
+  width: min(330px, 84vw);
+  height: auto;
+  margin: 0 auto 1.75rem;
+}
+
+/* The byline. Short enough now that it cannot wrap on any screen, so the size clamp that used
+   to protect it is gone. */
+.hero .lede {
+  font-size: 1rem;
+  margin: 0;
+}
+
+
+/* ============================================================ home page photograph */
+
+/* The document does not scroll on the home page — .scroll does. This is the whole trick behind
+   a background that never budges. A `position: fixed` layer is pinned to the viewport, but a
+   rubber band drags the VIEWPORT itself, and the fixed layer goes with it; that is why a flat
+   colour appeared the instant anything bounced, and why no amount of oversizing fixed it
+   without cropping the picture to pieces.
+   Move the scrolling inside an element and the document has nothing to overscroll. The bounce
+   still happens — to the content, inside .scroll — but the photograph behind it is anchored to
+   a viewport that is not going anywhere. So the image needs no overscan at all, and can be
+   sized to show as much of the frame as a screen of that shape can hold. */
+html:has(.home), body.home { height: 100%; }
+body.home { overflow: hidden; }
+
+.scroll {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Keep the bounce local: this element rubber-bands, and nothing chains out to the document. */
+  overscroll-behavior: contain;
+}
+
+/* A macro of a hard sunlight edge crossing a window sill.
+ *
+ * Painted on a fixed pseudo-element rather than with background-attachment: fixed, which is
+ * genuinely broken on iOS — Safari repaints it a beat behind the scroll and it judders. A
+ * position: fixed layer scrolls correctly because it simply does not move. */
+/* The photograph is an HDR JPEG: an ordinary SDR image with an ISO 21496-1 gain map beside it.
+   The gain map says how far past normal white each pixel may go — measured headroom here is
+   3.5x — so on an HDR screen in Chrome 137+ or Safari 26+ the sunlit sill genuinely glows
+   rather than merely being white. Everywhere else the base image decodes on its own and looks
+   exactly as it did. One file, no forking, nothing to detect.
+   Built by tools/make-hdr.swift; tools/README.md says why and how to retune it.
+
+   One layer, inset 0, and no overscan. Because the viewport cannot be dragged (see .scroll
+   above) nothing is ever exposed beyond this element, so `cover` only has to fill the screen
+   itself — which is the least it can possibly crop. On a typical laptop that is the full width
+   of the frame and about 94% of its height; the only loss left is the unavoidable difference
+   between the photograph's shape and the screen's. */
+.home::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: url("sun-macro.jpg") center 55% / cover no-repeat;
+}
+
+/* ART DIRECTION, not just a smaller file. A 3:2 photograph cropped to a phone's tall screen
+   loses most of itself — `cover` would throw away two thirds of the frame. This is a portrait
+   crop of the same shot, cut to keep what the picture is actually about: the corner of the
+   frame, and the sunlit sill with the shadow edge across it. */
+@media (max-aspect-ratio: 3/4) {
+  .home::before { background-image: url("sun-macro-portrait.jpg"); }
+}
+
+/* Small landscape screens get the 900px copy — 70 KB rather than 200 KB, no visible difference
+   at that size. Portrait ones are already served the crop above. */
+@media (max-width: 699.98px) and (min-aspect-ratio: 3/4) {
+  .home::before { background-image: url("sun-macro-900.jpg"); }
+}
+
+/* The photo is the ground now, so the flat colour must get out of its way. Nothing is laid over
+   the picture — no scrim, no tint — so it keeps its full colour and brightness. The text adapts
+   instead: every group of it sits on its own frosted panel, below. */
+.home { background: none; }
+
+/* Backstop for an overscroll harder than even the overscan covers. The root element's
+   background paints the whole canvas, including the area a rubber band exposes, so this is the
+   only colour that can appear there. It is the photograph's own average (#6a6251, measured),
+   so in the worst case the page runs off into the picture's own tone instead of into white. */
+html:has(.home) { background: #6a6251; }
+
+/* ============================================================ document pages */
+
+/* These rules look unused right now and should NOT be tidied away. The pages they style —
+   support and privacy — are held in ../site-pending until the app they belong to is close to
+   submission, and they come back unchanged. Same for .intro above. See site-pending/README.md. */
+
+/* Support and privacy are set in the reader's own system face, larger and looser. These are
+   pages someone reads to solve a problem or to check a claim, so legibility beats brand — and
+   the native face is the one their eye is most practised at. The brand face stays on the home
+   page, where it is doing brand work. */
+body.doc-page {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+               Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.72;
+  letter-spacing: 0;
+}
+
+.doc > h1 {
+  text-align: center;
+  /* Smaller than the home page's — this is a document heading, not a hero. */
+  font-size: clamp(1.45rem, 4vw, 1.8rem);
+}
+
+.doc > .lede {
+  text-align: center;
+  margin: 0 auto 2.5rem;
+  max-width: 34ch;
+  font-size: 1.0625rem;
+}
+
+/* Section marker: a quiet label, so it is not another bold line competing with the questions
+   underneath it. Seven bold headings in a row read as stripes. */
+.doc h2 {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 3rem 0 1rem;
+}
+
+/* The questions carry the weight now, at text size — findable when scanning, not shouting. */
+.doc h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  margin: 2rem 0 .4rem;
+}
+
+.doc p, .doc ul { margin-bottom: 1.15rem; }
